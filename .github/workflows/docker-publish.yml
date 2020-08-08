@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [test]
     env:
-      REPO: ${{ secret.DOCKERHUB_REPO }}
+      REPO: ${{ secrets.DOCKERHUB_REPO }}
 
     steps:
       - uses: actions/checkout@v1
