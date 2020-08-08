@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class User extends BaseModel {
+
     private String userName;
     private String firstName;
     private String lastName;
