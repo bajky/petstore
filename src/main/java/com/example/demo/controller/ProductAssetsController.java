@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(path = "/assets")
 public class ProductAssetsController {
 
-    private AssetsService assetsService;
+    private final AssetsService assetsService;
 
     @Autowired
     public ProductAssetsController(AssetsService assetsService) {

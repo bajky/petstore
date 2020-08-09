@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +17,12 @@ import java.util.Set;
 @Getter
 @Setter
 public class User extends BaseModel {
+
     private String userName;
     private String firstName;
     private String lastName;
     private String email;
+    @JsonIgnore
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY)
