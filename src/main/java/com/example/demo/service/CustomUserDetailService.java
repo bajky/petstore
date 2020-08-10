@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CustomUserDetailService implements UserDetailsService, UserService {
 
@@ -28,21 +26,22 @@ public class CustomUserDetailService implements UserDetailsService, UserService 
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> userOptional = usersRepository.findByUserName(userName);
-        if (userOptional.isEmpty()) {
+        User user = usersRepository.findByUserName(userName);
+        if (user == null) {
             throw new UsernameNotFoundException("User Not Found");
         }
-        return new org.springframework.security.core.userdetails.User(userOptional.get().getEmail(),
-                userOptional.get().getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUserName(),
+                user.getPassword(),
                 AuthorityUtils.createAuthorityList("USER"));
     }
 
     @Override
     public void registerUser(UserDto userDto) {
-        Optional<User> userByEmail = usersRepository.findByEmail(userDto.getEmail());
-        userByEmail.ifPresent(userFound -> {
+        User userByEmail = usersRepository.findByEmail(userDto.getEmail());
+
+        if (userByEmail == null) {
             throw new UserAlreadyExistsException();
-        });
+        }
 
         User user = new User();
         user.setUserName(userDto.getUserName());
