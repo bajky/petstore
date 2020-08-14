@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,11 +19,16 @@ import java.util.Set;
 @Setter
 public class User extends BaseModel {
 
+    @NotBlank
     private String userName;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
     private String email;
     @JsonIgnore
+    @NotBlank
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY)
