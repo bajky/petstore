@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Order extends BaseModel {
-    private double totalPrice;
+    private Double totalPrice;
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 

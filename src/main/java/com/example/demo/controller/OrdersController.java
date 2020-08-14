@@ -26,7 +26,7 @@ public class OrdersController {
     @RequestMapping(method = RequestMethod.POST, value = "/orders", consumes = MediaTypes.HAL_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<EntityModel<Order>> save(@RequestBody EntityModel<Order> order) {
-        EntityModel.of(order);
+        orderService.createOrder(order.getContent());
         return ResponseEntity.ok(order);
     }
 }
