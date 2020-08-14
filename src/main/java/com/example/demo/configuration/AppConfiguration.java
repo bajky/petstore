@@ -28,9 +28,12 @@ public class AppConfiguration {
 
     @Bean
     RepresentationModelProcessor<EntityModel<Order>> orderProcessor() {
-        return resource -> {
-            resource.add(repositoryEntityLinks.linkToCollectionResource(ProductsRepository.class));
-            return resource;
+        return new RepresentationModelProcessor<EntityModel<Order>>() {
+            @Override
+            public EntityModel<Order> process(EntityModel<Order> resource) {
+                resource.add(repositoryEntityLinks.linkToCollectionResource(ProductsRepository.class));
+                return resource;
+            }
         };
     }
 }
