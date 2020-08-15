@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +21,15 @@ import java.util.List;
 @Getter
 @Setter
 public class Order extends BaseModel {
-    private double totalPrice;
+    private Double totalPrice;
+
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date time;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)

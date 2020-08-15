@@ -1,9 +1,10 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.controller.dto.UserDto;
 import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UsersRepository;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService, UserService {
@@ -28,23 +27,25 @@ public class CustomUserDetailService implements UserDetailsService, UserService 
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> userOptional = usersRepository.findByUserName(userName);
-        if (userOptional.isEmpty()) {
+        var user = usersRepository.findByUserName(userName);
+        if (user == null) {
             throw new UsernameNotFoundException("User Not Found");
         }
-        return new org.springframework.security.core.userdetails.User(userOptional.get().getEmail(),
-                userOptional.get().getPassword(),
+
+        return new org.springframework.security.core.userdetails.User(user.getUserName(),
+                user.getPassword(),
                 AuthorityUtils.createAuthorityList("USER"));
     }
 
     @Override
     public void registerUser(UserDto userDto) {
-        Optional<User> userByEmail = usersRepository.findByEmail(userDto.getEmail());
-        userByEmail.ifPresent(userFound -> {
-            throw new UserAlreadyExistsException();
-        });
+        var userByName = usersRepository.findByUserName(userDto.getUserName());
 
-        User user = new User();
+        if (userByName != null) {
+            throw new UserAlreadyExistsException();
+        }
+
+        var user = new User();
         user.setUserName(userDto.getUserName());
         user.setLastName(userDto.getLastName());
         user.setFirstName(userDto.getFirstName());
@@ -52,5 +53,27 @@ public class CustomUserDetailService implements UserDetailsService, UserService 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         usersRepository.save(user);
+    }
+
+    @Override
+    public boolean hasUserId(UserDetails user, String id) {
+        if (id == null) {
+            return false;
+        }
+        try {
+            Long.valueOf(id);
+        } catch (NumberFormatException ex) {
+            return true;
+        }
+        var foundUser = usersRepository.findByUserName(user.getUsername());
+        if (foundUser == null) {
+            return false;
+        }
+        return Long.valueOf(id).equals(foundUser.getId());
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        return usersRepository.findByUserName(userName);
     }
 }

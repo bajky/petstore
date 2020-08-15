@@ -1,13 +1,16 @@
 package com.example.demo.controller.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Data
-public class UserDto {
+@Getter
+@Setter
+public class UserDto extends RepresentationModel<UserDto> {
     @NotBlank
     private String userName;
     @NotBlank
@@ -16,6 +19,10 @@ public class UserDto {
     private String lastName;
     @Email
     private String email;
-    @JsonIgnore
     private String password;
+
+    @JsonIgnore
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
