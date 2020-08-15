@@ -13,7 +13,7 @@ public class GlobalRestResourceConfig implements RepositoryRestConfigurer {
         config.getCorsRegistry()
                 .addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "DELETE", "OPTIONS", "PUT");
+                .allowedMethods("GET", "POST", "DELETE", "OPTIONS", "PUT", "PATCH");
 
         config.exposeIdsFor(Product.class);
         config.setBasePath("/api");

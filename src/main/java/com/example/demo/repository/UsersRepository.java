@@ -8,12 +8,8 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UsersRepository extends PagingAndSortingRepository<User, Long> {
-    User findByUserName(@Param("userName") String userName);
-    User findByEmail(@Param("email") String email);
-
-    @Override
     @RestResource(exported = false)
-    <S extends User> S save(S var1);
+    User findByUserName(@Param("userName") String userName);
 
     @Override
     @RestResource(exported = false)

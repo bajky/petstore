@@ -31,6 +31,7 @@ public class CustomUserDetailService implements UserDetailsService, UserService 
         if (user == null) {
             throw new UsernameNotFoundException("User Not Found");
         }
+
         return new org.springframework.security.core.userdetails.User(user.getUserName(),
                 user.getPassword(),
                 AuthorityUtils.createAuthorityList("USER"));
@@ -52,5 +53,27 @@ public class CustomUserDetailService implements UserDetailsService, UserService 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         usersRepository.save(user);
+    }
+
+    @Override
+    public boolean hasUserId(UserDetails user, String id) {
+        if (id == null) {
+            return false;
+        }
+        try {
+            Long.valueOf(id);
+        } catch (NumberFormatException ex) {
+            return true;
+        }
+        var foundUser = usersRepository.findByUserName(user.getUsername());
+        if (foundUser == null) {
+            return false;
+        }
+        return Long.valueOf(id).equals(foundUser.getId());
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        return usersRepository.findByUserName(userName);
     }
 }

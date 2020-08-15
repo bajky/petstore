@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.OrderException;
 import com.example.demo.model.Order;
 import com.example.demo.model.Product;
 import com.example.demo.repository.OrdersRepository;
@@ -19,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order) {
+        if (order.getProducts() == null || order.getProducts().isEmpty()) {
+            throw new OrderException("Order must contain at least one product");
+        }
         order.getProducts().stream()
                 .map(Product::getPrice)
                 .reduce(Double::sum)
