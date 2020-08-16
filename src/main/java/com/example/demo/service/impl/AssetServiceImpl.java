@@ -41,12 +41,8 @@ public class AssetServiceImpl implements AssetsService {
     }
 
     @Override
-    public List<ProductAsset> getAssetsByProductId(long productId) {
-        Product product = productsRepository.findById(productId).orElse(null);
-        if (product == null) {
-            return Collections.emptyList();
-        }
-        return product.getAssets();
+    public List<ProductAsset> getAssetsByProductName(String productName) {
+        return assetsRepository.findAllByProductProductName(productName);
     }
 
     public Optional<ProductAsset> getProductAssetById(long id) {

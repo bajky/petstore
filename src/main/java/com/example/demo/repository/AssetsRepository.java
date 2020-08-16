@@ -4,6 +4,9 @@ import com.example.demo.model.ProductAsset;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AssetsRepository extends JpaRepository<ProductAsset, Long> {
+    List<ProductAsset> findAllByProductProductName(String productName);
 }

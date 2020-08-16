@@ -38,12 +38,12 @@ public class ProductAssetsController {
         assetsService.assignAssetToProduct(productId, file);
     }
 
-    @GetMapping(path = "/search/{productId}")
-    public AssetRepresentationModel handleGetResources(@PathVariable("productId") long productId) {
+    @GetMapping(path = "/search/{productName}")
+    public AssetRepresentationModel handleGetResources(@PathVariable("productName") String productId) {
         AssetRepresentationModel assetRepresentationModel = new AssetRepresentationModel();
-        assetsService.getAssetsByProductId(productId)
+        assetsService.getAssetsByProductName(productId)
                 .forEach(asset -> assetRepresentationModel
-                        .add(linkTo(methodOn(ProductAssetsController.class).handleGetFile(asset.getId(), null)).withSelfRel()));
+                        .add(linkTo(methodOn(ProductAssetsController.class).handleGetFile(asset.getId(), null)).withRel("assets")));
         return assetRepresentationModel;
     }
 

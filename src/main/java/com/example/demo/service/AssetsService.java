@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface AssetsService {
     void assignAssetToProduct(long productId, MultipartFile multipartFile);
-    List<ProductAsset> getAssetsByProductId(long productId);
+    List<ProductAsset> getAssetsByProductName(String productName);
     Optional<ProductAsset> getProductAssetById(long id);
 }
